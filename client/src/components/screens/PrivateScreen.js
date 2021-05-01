@@ -1,36 +1,51 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import "./PrivateScreen.css";
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import './PrivateScreen.css'
 
-const PrivateScreen = ({history}) => {
-  const [error, setError] = useState("");
-  const [privateData, setPrivateData] = useState("");
+const PrivateScreen = ({ history }) => {
+	const [error, setError] = useState('')
+	const [privateData, setPrivateData] = useState('')
 
-  useEffect(() => {
-    const fetchPrivateDate = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      };
+	useEffect(() => {
+		if (!localStorage.getItem('authToken')) {
+			history.push('/login')
+		}
 
-      try {
-        const { data } = await axios.get("/api/private", config);
-        setPrivateData(data.data);
-      } catch (error) {
-        localStorage.removeItem("authToken");
-        setError("You are not authorized please login");
-      }
-    };
+		const fetchPrivateDate = async () => {
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				},
+			}
 
-    fetchPrivateDate();
-  }, [history]);
-  return error ? (
-    <span className="error-message">{error}</span>
-  ) : (
-    <div>{privateData} <h1>Bakit walang logout?</h1></div>
-  );
-};
+			try {
+				const { data } = await axios.get('/api/private', config)
+				setPrivateData(data.data)
+			} catch (error) {
+				localStorage.removeItem('authToken')
+				setError('You are not authorized please login')
+			}
+		}
 
-export default PrivateScreen;
+		fetchPrivateDate()
+	}, [history])
+
+  const logoutHandler = () => {
+    localStorage.removeItem('authToken')
+    history.push('/login')
+  }
+
+	return error ? (
+		<span className='error-message'>{error}</span>
+	) : (
+    <>
+		<div style={{ background: 'green', color: 'white' }}>
+			{privateData} <h1>Bakit walang logout?</h1>
+		</div>
+    <button className='btn btn-primary' onClick={logoutHandler}>Log out</button>
+    </>
+	)
+}
+
+export default PrivateScreen
