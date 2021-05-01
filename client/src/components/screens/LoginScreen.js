@@ -3,11 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./LoginScreen.css";
 import ButtonLoader from '../ButtonLoader'
+import * as ReactBootStrap from 'react-bootstrap'
 
 const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
@@ -34,6 +36,7 @@ const LoginScreen = ({ history }) => {
       localStorage.setItem("authToken", data.token);
 
       history.push("/");
+      
     } catch (error) {
       setError(error.response.data.error);
       setTimeout(() => {
@@ -80,6 +83,7 @@ const LoginScreen = ({ history }) => {
         <button type="submit" className="btn btn-primary">
           Login
         </button>
+        {<ReactBootStrap.Spinner animation='border'/>}
 
         <ButtonLoader/>
 
