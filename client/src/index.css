@@ -71,3 +71,20 @@ body {
   text-align: center;
   margin: 0.5rem 0;
 }
+
+.button {
+  background-color: #008cba; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.button:disabled {
+  opacity: 1;
+}
